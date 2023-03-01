@@ -1,14 +1,23 @@
-const updateGame = function() {
-    selections[1].setAttribute("disabled", "true");
-    selections[0].setAttribute("disabled", "true");
+function updateGame() {
     if (currentPlayer.choice === undefined) {
         return;
     }
+
+    // Update tableState
+    tableState[spots.indexOf(this)] = currentPlayer.choice;
+
+    // Disable "X" and "O" buttons
+    selections[1].setAttribute("disabled", "true");
+    selections[0].setAttribute("disabled", "true");
     count++;
+
+    // Disable current spot
     this.setAttribute("disabled","true");
     this.setAttribute("value", `${currentPlayer.choice}`);
     currentPlayer = getCurrentPlayer();
     winner.innerText = getWinner();
+
+    // Disable all spots if the game is over
     if (getWinner() !== "You Got this!" ) {
         spots.forEach(function(spot) {
             spot.setAttribute("disabled", "true");
@@ -16,6 +25,7 @@ const updateGame = function() {
     }
 }
 
+// Switch players
 function getCurrentPlayer() {
     if (currentPlayer === p1) {
         return p2;
@@ -23,42 +33,50 @@ function getCurrentPlayer() {
     return p1;
 }
 
-// Checks for three "X"s or "O's in a line, using array indices
+
+/**
+ * Visual representaion of the spots array
+ * [0] [1] [2]
+ * [3] [4] [5]
+ * [6] [7] [8]
+ * 
+*/
+
+// Check for winner
 function getWinner() {
-    // Starts at top left (horizontal, vertical, diagonal) lines
-    if ((spots[0].value !== "") &&
-        ((spots[0].value === spots[1].value && spots[0].value === spots[2].value)
-        || (spots[0].value === spots[3].value && spots[0].value === spots[6].value)
-        || (spots[0].value === spots[4].value && spots[0].value === spots[8].value))) {
-            return `${spots[0].value} wins!`;
-    }
+    const winningConditions = [
+        // Horizontal lines
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        // Vertical lines
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        // Diagonal lines
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
 
-    // Starts at top right (vertical, diagonal) lines
-    if ((spots[2].value !== "") &&
-        ((spots[2].value === spots[5].value && spots[2].value === spots[8].value)
-        || (spots[2].value === spots[4].value && spots[2].value === spots[6].value))) {
-            return `${spots[2].value} wins!`;
+    for (let i = 0; i < 8; i++) {
+        let winningCondition = winningConditions[i];
+        let spot1 = tableState[winningCondition[0]];
+        let spot2 = tableState[winningCondition[1]];
+        let spot3 = tableState[winningCondition[2]];
+        if (spot1 === "" || spot2 === "" || spot3 === "") {
+            continue;
+        }
+        if (spot1 === spot2 && spot2 === spot3) {
+            return `${spot1} wins!`
+        }
     }
-
-    // 2nd and 3rd horizontal line
-    if (spots[3].value !== "" && spots[3].value === spots[4].value && spots[3].value === spots[5].value) {
-        return `${spots[3].value} wins!`;
-    }
-    if (spots[6].value !== "" && spots[6].value === spots[7].value && spots[6].value === spots[8].value) {
-        return `${spots[6].value} wins!`;
-    }
-    
-    // 2nd vertical line
-    if (spots[1].value !== "" && spots[1].value === spots[4].value && spots[1].value === spots[7].value) {
-        return `${spots[1].value} wins!`;
-    }
-
     if (count === 9) {
         return `tie!`;
     }
     return "You Got this!";
 }
 
+// Create player objects
 const PlayerFactory = (playerName, choice) => {
     function getChoice() {
         if (playerName === "p1") {
@@ -80,6 +98,7 @@ const PlayerFactory = (playerName, choice) => {
 
 // Counts number of taken spots on the table
 let count = 0;
+let tableState = ["", "", "", "", "", "", "", "", ""];
 
 // DOM
 const table = document.createElement('div');
@@ -90,12 +109,14 @@ for (let i = 0; i < 9; i++) {
     btn.setAttribute("id", "btn");
     btn.setAttribute("type", "button");
     btn.setAttribute("value", "");
-    btn.setAttribute("disabled", "true")
+    btn.setAttribute("disabled", "true");
     spots.push(btn);
     table.appendChild(btn);
 }
 document.body.appendChild(table);
 const winner = document.querySelector("h1");
+
+// Reset button
 const reset = document.createElement('input');
 reset.setAttribute("id", "reset");
 reset.setAttribute("type", "button");
@@ -105,10 +126,11 @@ reset.setAttribute("disabled", "true")
 
 // Listen for clicks on the reset button
 reset.addEventListener('click', function() {
+    tableState = ["", "", "", "", "", "", "", "", ""];
     currentPlayer = p1;
     spots.forEach(function(spot) {
-    spot.removeAttribute("disabled");
-    spot.setAttribute("value", "");
+        spot.removeAttribute("disabled");
+        spot.setAttribute("value", "");
     });
     selections[1].removeAttribute("disabled");
     selections[0].removeAttribute("disabled");
@@ -138,5 +160,5 @@ Array.from(selections).forEach(function(selection) {
 // Listen for clicks on the table
 spots.forEach(function(spot) {
     spot.addEventListener('click', updateGame);
-})
+});
 
