@@ -21,6 +21,11 @@ body {
     border-radius: 10px;
 }
 
+#btn:hover {
+    background-color: rgb(207, 207, 207);
+    cursor: pointer;
+}
+
 #reset {
     display: block;
     margin-top: 33px;
@@ -36,6 +41,13 @@ body {
     font-size: medium;
 }
 
+#reset:hover {
+    background-color: green;
+    outline: none !important;
+    box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
 span {
     margin-top: 50px;
     margin-bottom: 33px;
@@ -46,4 +58,30 @@ span {
 
 h1 {
     font-size: 32px;
+}
+
+.selection {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#xo {
+    background-color: rgb(240,240,240);
+    color: black;
+    border-width: 1.5px;
+    border-color: transparent;
+    font-size: 20px;
+    height: 60px;
+    width: 60px;
+    font-weight: 900;
+    border-radius: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    
+}
+
+#xo:hover {
+    box-shadow: 0 0 8px 0.5px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
 }

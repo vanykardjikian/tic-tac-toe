@@ -1,12 +1,6 @@
-/**const Gameboard = (() => {
-    const gameboard = ['x', 'o', 'x', 'o', 'o', 'x', 'x', 'o', 'x'];
-    const add = function() {
-        console.log("work")
-    }
-    return {add,}
-})();**/
-
 const updateGame = function() {
+    selections[1].setAttribute("disabled", "true");
+    selections[0].setAttribute("disabled", "true");
     if (currentPlayer.choice === undefined) {
         return;
     }
@@ -14,71 +8,80 @@ const updateGame = function() {
     this.setAttribute("disabled","true");
     this.setAttribute("value", `${currentPlayer.choice}`);
     currentPlayer = getCurrentPlayer();
-    console.log(getWinner());
     winner.innerText = getWinner();
     if (getWinner() !== "You Got this!" ) {
         spots.forEach(function(spot) {
-            spot.setAttribute("disabled", "true")
+            spot.setAttribute("disabled", "true");
         })
     }
 }
 
 function getCurrentPlayer() {
     if (currentPlayer === p1) {
-        return p2
+        return p2;
     }
     return p1;
 }
 
+// Checks for three "X"s or "O's in a line, using array indices
 function getWinner() {
-    // Top left
-    if (spots[0].value !== "") {
-        if (spots[0].value === spots[1].value && spots[0].value === spots[2].value) {
-            return `${spots[0].value} wins!`
-        }
-        if (spots[0].value === spots[3].value && spots[0].value === spots[6].value) {
-            return `${spots[0].value} wins!`
-        }
-        if (spots[0].value === spots[4].value && spots[0].value === spots[8].value) {
-            return `${spots[0].value} wins!`
-        }
+    // Starts at top left (horizontal, vertical, diagonal) lines
+    if ((spots[0].value !== "") &&
+        ((spots[0].value === spots[1].value && spots[0].value === spots[2].value)
+        || (spots[0].value === spots[3].value && spots[0].value === spots[6].value)
+        || (spots[0].value === spots[4].value && spots[0].value === spots[8].value))) {
+            return `${spots[0].value} wins!`;
     }
 
-    // Top right
-    if (spots[2].value !== "") {
-        if (spots[2].value === spots[5].value && spots[2].value === spots[8].value) {
-            return `${spots[2].value} wins!`
-        }
-        if (spots[2].value === spots[4].value && spots[2].value === spots[6].value) {
-            return `${spots[2].value} wins!`
-        }
+    // Starts at top right (vertical, diagonal) lines
+    if ((spots[2].value !== "") &&
+        ((spots[2].value === spots[5].value && spots[2].value === spots[8].value)
+        || (spots[2].value === spots[4].value && spots[2].value === spots[6].value))) {
+            return `${spots[2].value} wins!`;
     }
 
-
+    // 2nd and 3rd horizontal line
     if (spots[3].value !== "" && spots[3].value === spots[4].value && spots[3].value === spots[5].value) {
-        return `${spots[3].value} wins!`
+        return `${spots[3].value} wins!`;
     }
     if (spots[6].value !== "" && spots[6].value === spots[7].value && spots[6].value === spots[8].value) {
-        return `${spots[6].value} wins!`
+        return `${spots[6].value} wins!`;
     }
     
+    // 2nd vertical line
     if (spots[1].value !== "" && spots[1].value === spots[4].value && spots[1].value === spots[7].value) {
-        return `${spots[1].value} wins!`
+        return `${spots[1].value} wins!`;
     }
 
     if (count === 9) {
-        return `tie!`
+        return `tie!`;
     }
-    return "You Got this!"
+    return "You Got this!";
 }
 
 const PlayerFactory = (playerName, choice) => {
-    return {choice, playerName};
-};
+    function getChoice() {
+        if (playerName === "p1") {
+            return choice;
+        }
+        if (playerName !== currentPlayer && choice === currentPlayer.choice) {
+            if (choice !== 'X') {
+                return 'X';
+            }
+            return 'O';
+        }
+        if (choice === undefined) {
+            return;
+        }
+        return choice;
+    }
+    return {playerName, choice: getChoice()};
+}
 
-
+// Counts number of taken spots on the table
 let count = 0;
 
+// DOM
 const table = document.createElement('div');
 table.setAttribute("class", "table");
 const spots = [];
@@ -87,39 +90,52 @@ for (let i = 0; i < 9; i++) {
     btn.setAttribute("id", "btn");
     btn.setAttribute("type", "button");
     btn.setAttribute("value", "");
+    btn.setAttribute("disabled", "true")
     spots.push(btn);
     table.appendChild(btn);
 }
-
 document.body.appendChild(table);
 const winner = document.querySelector("h1");
-let reset = document.createElement('input');
+const reset = document.createElement('input');
 reset.setAttribute("id", "reset");
 reset.setAttribute("type", "button");
 reset.setAttribute("value", "Reset")
 document.body.appendChild(reset);
+reset.setAttribute("disabled", "true")
+
+// Listen for clicks on the reset button
 reset.addEventListener('click', function() {
+    currentPlayer = p1;
     spots.forEach(function(spot) {
     spot.removeAttribute("disabled");
-    spot.setAttribute("value", "")
+    spot.setAttribute("value", "");
     });
-    winner.innerText = "Good Luck!"
+    selections[1].removeAttribute("disabled");
+    selections[0].removeAttribute("disabled");
+    winner.innerText = "Good Luck!";
     count = 0;
 });
 
+let p1 = {};
+let p2 = {};
+let currentPlayer = {};
+let selections = document.querySelectorAll('#xo');
 
-const p1 = PlayerFactory("p1", "X");
-const p2 = PlayerFactory("p2", "O");
-let currentPlayer = p1;
-const selections = Array.from(document.querySelectorAll('button', 'selection'));
-selections.forEach(function(selection) {
+// Listen for clicks on the "X" or "O" buttons
+Array.from(selections).forEach(function(selection) {
     selection.addEventListener('click', function() {
-        currentPlayer.choice = this.value;
-        console.log(currentPlayer.choice);
-        return currentPlayer.choice;
+        p1 = PlayerFactory("p1", this.value);
+        currentPlayer = p1;
+        p2 = PlayerFactory("p2", "O"); 
+        selections[1].setAttribute("disabled", "true");
+        selections[0].setAttribute("disabled", "true");
+        reset.removeAttribute("disabled");
+        reset.click();
     });
+    
 });
 
+// Listen for clicks on the table
 spots.forEach(function(spot) {
     spot.addEventListener('click', updateGame);
 })
