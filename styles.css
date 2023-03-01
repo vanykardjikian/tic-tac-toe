@@ -1,29 +1,40 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    font-family: Roboto;
 }
 
 .table {
     display: flex;
-    height: 300px;
-    width: 300px;
+    height: 340px;
+    width: 340px;
     flex-wrap: wrap;
     margin-left: auto;
     margin-right: auto;
     margin-top: 0px;
+    justify-content: space-around;
 }
 
 #btn {
-    height: 100px;
-    width: 100px;
+    height: 110px;
+    width: 110px;
     font-size: 50px;
     font-weight: bold;
-    color: black;
+    color: white;
     border-radius: 10px;
 }
 
 #btn:hover {
     background-color: rgb(207, 207, 207);
     cursor: pointer;
+}
+
+#btn:disabled {
+    color: rgb(2,0,21);
+    background-color: rgb(207, 207, 207);
+    border-width: 3.2px;
+    border-color: rgb(2,0,21);
+    outline: none !important;
 }
 
 #reset {
@@ -34,15 +45,17 @@ body {
     height: 50px;
     width: 100px;
     border-width: 0px;
-    background-color: rgb(255, 60, 60);
+    background-color: rgb(93, 82, 255);
     border-radius: 10px;
-    color: white;
-    font-weight: bold;
-    font-size: medium;
+    color: rgb(2,0,21);
+    font-weight: 900;
+    font-family: system-ui;
+    font-size: 18px;
 }
 
 #reset:hover {
-    background-color: green;
+    background-color: rgb(255, 250, 107);
+    color: black;
     outline: none !important;
     box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.5);
     cursor: pointer;
@@ -50,31 +63,36 @@ body {
 
 span {
     margin-top: 50px;
-    margin-bottom: 33px;
+    margin-bottom: 10px;
     display: flex;
-    justify-content: center;
-    
+    justify-content: center; 
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 40px;
+    color: white;
+    margin-top: 0px;
+    cursor: default;
 }
 
 .selection {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 30px;
+    margin-bottom: 0;
+    padding: 30px;
+    padding-bottom: 0;
 }
 
 #xo {
-    background-color: rgb(240,240,240);
-    color: black;
+    background-color: rgba(240,240,240, 0);
+    color: white;
     border-width: 1.5px;
     border-color: transparent;
-    font-size: 20px;
-    height: 60px;
-    width: 60px;
-    font-weight: 900;
+    height: 75px;
+    width: 75px;
+    font-size: 70px;
+    font-weight: bold;
     border-radius: 10px;
     margin-left: 50px;
     margin-right: 50px;
@@ -82,6 +100,38 @@ h1 {
 }
 
 #xo:hover {
-    box-shadow: 0 0 8px 0.5px rgba(0, 0, 0, 0.5);
+    color: rgb(255, 250, 107);
     cursor: pointer;
+}
+
+#outerVs {
+    display: flex;
+    align-items: center;
+}
+
+#vs {
+    font-weight: 900;
+    font-size: 30px;
+    color: rgb(93, 82, 255);
+    cursor: default;
+}
+
+
+#line {
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    cursor: default;
+    margin-top: 0;
+}
+
+#question {
+    height: 300px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;
+    border-radius: 10px;
+    font-size: 125px;
+    color: rgb(2,0,21);
 }

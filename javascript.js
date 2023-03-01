@@ -18,7 +18,7 @@ function updateGame() {
     winner.innerText = getWinner();
 
     // Disable all spots if the game is over
-    if (getWinner() !== "You Got this!" ) {
+    if (getWinner() !== "You Got This!" ) {
         spots.forEach(function(spot) {
             spot.setAttribute("disabled", "true");
         })
@@ -67,13 +67,13 @@ function getWinner() {
             continue;
         }
         if (spot1 === spot2 && spot2 === spot3) {
-            return `${spot1} wins!`
+            return `${spot1} Wins!`
         }
     }
     if (count === 9) {
-        return `tie!`;
+        return `Tie!`;
     }
-    return "You Got this!";
+    return "You Got This!";
 }
 
 // Create player objects
@@ -101,6 +101,8 @@ let count = 0;
 let tableState = ["", "", "", "", "", "", "", "", ""];
 
 // DOM
+document.body.style.backgroundImage = "url('bgy.svg')";
+document.body.style.backgroundSize = 'cover';
 const table = document.createElement('div');
 table.setAttribute("class", "table");
 const spots = [];
@@ -113,7 +115,12 @@ for (let i = 0; i < 9; i++) {
     spots.push(btn);
     table.appendChild(btn);
 }
-document.body.appendChild(table);
+
+const questionMark = document.createElement('button');
+questionMark.setAttribute("id", "question");
+questionMark.innerText = "?";
+document.body.appendChild(questionMark);
+// document.body.appendChild(table);
 const winner = document.querySelector("h1");
 
 // Reset button
@@ -121,7 +128,7 @@ const reset = document.createElement('input');
 reset.setAttribute("id", "reset");
 reset.setAttribute("type", "button");
 reset.setAttribute("value", "Reset")
-document.body.appendChild(reset);
+// document.body.appendChild(reset);
 reset.setAttribute("disabled", "true")
 
 // Listen for clicks on the reset button
@@ -146,6 +153,11 @@ let selections = document.querySelectorAll('#xo');
 // Listen for clicks on the "X" or "O" buttons
 Array.from(selections).forEach(function(selection) {
     selection.addEventListener('click', function() {
+        if (questionMark.parentElement === document.body) {
+            document.body.removeChild(questionMark);
+        }
+        document.body.appendChild(table);
+        document.body.appendChild(reset);
         p1 = PlayerFactory("p1", this.value);
         currentPlayer = p1;
         p2 = PlayerFactory("p2", "O"); 
@@ -154,11 +166,9 @@ Array.from(selections).forEach(function(selection) {
         reset.removeAttribute("disabled");
         reset.click();
     });
-    
 });
 
 // Listen for clicks on the table
 spots.forEach(function(spot) {
     spot.addEventListener('click', updateGame);
 });
-
