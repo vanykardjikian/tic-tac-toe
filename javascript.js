@@ -42,7 +42,7 @@ function getCurrentPlayer() {
  * 
 */
 
-// Check for winner
+// Check for winning conditions
 function getWinner() {
     const winningConditions = [
         // Horizontal lines

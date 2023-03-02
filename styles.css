@@ -22,6 +22,8 @@ body {
     font-weight: bold;
     color: white;
     border-radius: 10px;
+    border-style: solid;
+    border-color: transparent;
 }
 
 #btn:hover {
@@ -45,7 +47,7 @@ body {
     height: 50px;
     width: 100px;
     border-width: 0px;
-    background-color: rgb(93, 82, 255);
+    background-color: rgb(105, 184, 253);
     border-radius: 10px;
     color: rgb(2,0,21);
     font-weight: 900;
@@ -126,12 +128,14 @@ h1 {
 }
 
 #question {
-    height: 300px;
-    width: 300px;
+    height: 340px;
+    width: 340px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 0px;
     border-radius: 10px;
+    border-style: solid;
+    border-color: transparent;
     font-size: 125px;
     color: rgb(2,0,21);
 }
