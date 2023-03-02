@@ -48,6 +48,7 @@ body {
 #reset {
     display: block;
     margin-top: 33px;
+    margin-bottom: 33px;
     margin-left: auto;
     margin-right: auto;
     height: 50px;
