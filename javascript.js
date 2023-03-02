@@ -101,8 +101,6 @@ let count = 0;
 let tableState = ["", "", "", "", "", "", "", "", ""];
 
 // DOM
-document.body.style.backgroundImage = "url('bgy.svg')";
-document.body.style.backgroundSize = 'cover';
 const table = document.createElement('div');
 table.setAttribute("class", "table");
 const spots = [];
